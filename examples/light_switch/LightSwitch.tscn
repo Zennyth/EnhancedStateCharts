@@ -1,31 +1,10 @@
-[gd_scene load_steps=16 format=3 uid="uid://dqgdr7rlpb0rl"]
+[gd_scene load_steps=9 format=3 uid="uid://dqgdr7rlpb0rl"]
 
-[ext_resource type="Script" path="res://addons/enhanced_state_chart/scripts/states/composites/compound_state.gd" id="1_isuga"]
-[ext_resource type="Script" path="res://addons/enhanced_state_chart/scripts/states/composites/state_chart.gd" id="1_mo0qm"]
-[ext_resource type="Script" path="res://addons/enhanced_state_chart/scripts/states/atomic_state.gd" id="2_frut2"]
-[ext_resource type="Script" path="res://addons/enhanced_state_chart/scripts/transitions/events/event.gd" id="5_81ciy"]
-[ext_resource type="Script" path="res://addons/enhanced_state_chart/scripts/transitions/events/event_transition.gd" id="5_rt1kq"]
-[ext_resource type="Script" path="res://addons/enhanced_state_chart/scripts/actions/state_actions/animation_player_action.gd" id="6_xrq42"]
-[ext_resource type="Script" path="res://addons/enhanced_state_chart/scripts/transitions/delay_transition.gd" id="7_3fp0e"]
-[ext_resource type="Script" path="res://addons/enhanced_state_chart/scripts/transitions/guards/guard.gd" id="8_b6elt"]
-
-[sub_resource type="Resource" id="Resource_0uhjp"]
-script = ExtResource("5_81ciy")
-source_path = NodePath("../../../../Button")
-signal_name = "pressed"
-
-[sub_resource type="Resource" id="Resource_47ht2"]
-script = ExtResource("8_b6elt")
-
-[sub_resource type="Resource" id="Resource_ixmfo"]
-script = ExtResource("5_81ciy")
-source_path = NodePath("../../../../../Button")
-signal_name = "pressed"
-
-[sub_resource type="Resource" id="Resource_xur6j"]
-script = ExtResource("5_81ciy")
-source_path = NodePath("../../../../Button")
-signal_name = "pressed"
+[ext_resource type="Script" path="res://addons/enhanced_state_chart/scripts/states/composites/state_chart.gd" id="1_2hwpr"]
+[ext_resource type="Script" path="res://addons/enhanced_state_chart/scripts/states/composites/compound_state.gd" id="2_4tsff"]
+[ext_resource type="Script" path="res://addons/enhanced_state_chart/scripts/transitions/event_transition.gd" id="3_33qot"]
+[ext_resource type="Script" path="res://addons/enhanced_state_chart/scripts/actions/state_actions/animation_player_action.gd" id="5_ggx5s"]
+[ext_resource type="Script" path="res://addons/enhanced_state_chart/scripts/states/atomic_state.gd" id="6_1sufk"]
 
 [sub_resource type="Animation" id="Animation_rf16e"]
 resource_name = "SwitchOff"
@@ -69,64 +48,49 @@ _data = {
 
 [node name="Root" type="Node" parent="."]
 process_mode = 3
-script = ExtResource("1_mo0qm")
+script = ExtResource("1_2hwpr")
 
 [node name="LightState" type="Node" parent="Root"]
 process_mode = 3
-script = ExtResource("1_isuga")
+script = ExtResource("2_4tsff")
 initial_state_path = NodePath("Off")
 
 [node name="Off" type="Node" parent="Root/LightState"]
 process_mode = 3
-script = ExtResource("1_isuga")
-initial_state_path = NodePath("A")
+script = ExtResource("6_1sufk")
 
 [node name="Pressed" type="Node" parent="Root/LightState/Off"]
-script = ExtResource("5_rt1kq")
-event = SubResource("Resource_0uhjp")
+script = ExtResource("3_33qot")
+source_path = NodePath("../../../../Button")
+signal_name = "pressed"
 to_path = NodePath("../../On")
-guard = SubResource("Resource_47ht2")
+debug = true
 
 [node name="AnimationPlayer" type="Node" parent="Root/LightState/Off" node_paths=PackedStringArray("animation_player")]
-script = ExtResource("6_xrq42")
+script = ExtResource("5_ggx5s")
 animation_player = NodePath("../../../../SwitchAnimation")
 animation_name = "SwitchOff"
 
-[node name="A" type="Node" parent="Root/LightState/Off"]
-process_mode = 3
-script = ExtResource("2_frut2")
-
-[node name="Pressed" type="Node" parent="Root/LightState/Off/A"]
-script = ExtResource("5_rt1kq")
-event = SubResource("Resource_ixmfo")
-to_path = NodePath("..")
-
-[node name="Delay" type="Node" parent="Root/LightState/Off/A"]
-script = ExtResource("7_3fp0e")
-to_path = NodePath("../../B")
-
-[node name="B" type="Node" parent="Root/LightState/Off"]
-script = ExtResource("2_frut2")
-
 [node name="On" type="Node" parent="Root/LightState"]
-script = ExtResource("2_frut2")
+script = ExtResource("6_1sufk")
 
 [node name="Pressed" type="Node" parent="Root/LightState/On"]
-script = ExtResource("5_rt1kq")
-event = SubResource("Resource_xur6j")
+script = ExtResource("3_33qot")
+source_path = NodePath("../../../../Button")
+signal_name = "pressed"
 to_path = NodePath("../../Off")
 
 [node name="AnimationPlayer" type="Node" parent="Root/LightState/On" node_paths=PackedStringArray("animation_player")]
-script = ExtResource("6_xrq42")
+script = ExtResource("5_ggx5s")
 animation_player = NodePath("../../../../SwitchAnimation")
 animation_name = "SwitchOn"
+
+[node name="Camera2D" type="Camera2D" parent="."]
 
 [node name="Button" type="Button" parent="."]
 offset_right = 225.0
 offset_bottom = 31.0
 text = "Flick"
-
-[node name="Camera2D" type="Camera2D" parent="."]
 
 [node name="CheckButton" type="CheckButton" parent="."]
 offset_left = 16.0

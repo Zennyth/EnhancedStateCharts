@@ -11,17 +11,13 @@ func initialize(_transition: ETransition) -> void:
     pressed.connect(_on_pressed)
 
 
-func _on_pressed() -> void:
-    if transition.event == null:
-        transition.event = EEvent.new()
-        return
-    
+func _on_pressed() -> void:    
     signal_picker = SignalPicker.instantiate()
-    signal_picker.initialize(transition.get_node(transition.event.source_path))
+    signal_picker.initialize(transition.source)
     signal_picker.signal_picked.connect(_on_signal_picked)
     add_child(signal_picker)
 
 
 func _on_signal_picked(signal_name: String, node: Node) -> void:
-    transition.event.signal_name = signal_name 
+    transition.signal_name = signal_name 
     signal_picker.close()
