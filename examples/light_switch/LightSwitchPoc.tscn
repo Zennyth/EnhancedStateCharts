@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://b3r5mgo7mo7d0"]
+
+[node name="LightSwitch" type="Node2D"]
+
+[node name="Off" type="Node2D" parent="."]
+
+[node name="A" type="Node2D" parent="Off"]
+
+[node name="Flick" type="Node" parent="Off/A"]
+
+[node name="Delay2s" type="Node" parent="Off/A"]
+
+[node name="B" type="Node2D" parent="Off"]
+
+[node name="Flick" type="Node" parent="Off/B"]
+
+[node name="TurnOffLight" type="Node3D" parent="Off"]
+
+[node name="On" type="Node2D" parent="."]
+
+[node name="Flick" type="Node" parent="On"]
+
+[node name="TurnOnLight" type="Node3D" parent="On"]

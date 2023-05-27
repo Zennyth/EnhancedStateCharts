@@ -1,0 +1,141 @@
+[gd_scene load_steps=16 format=3 uid="uid://dqgdr7rlpb0rl"]
+
+[ext_resource type="Script" path="res://addons/enhanced_state_chart/scripts/states/composites/compound_state.gd" id="1_isuga"]
+[ext_resource type="Script" path="res://addons/enhanced_state_chart/scripts/states/composites/state_chart.gd" id="1_mo0qm"]
+[ext_resource type="Script" path="res://addons/enhanced_state_chart/scripts/states/atomic_state.gd" id="2_frut2"]
+[ext_resource type="Script" path="res://addons/enhanced_state_chart/scripts/transitions/events/event.gd" id="5_81ciy"]
+[ext_resource type="Script" path="res://addons/enhanced_state_chart/scripts/transitions/events/event_transition.gd" id="5_rt1kq"]
+[ext_resource type="Script" path="res://addons/enhanced_state_chart/scripts/actions/state_actions/animation_player_action.gd" id="6_xrq42"]
+[ext_resource type="Script" path="res://addons/enhanced_state_chart/scripts/transitions/delay_transition.gd" id="7_3fp0e"]
+[ext_resource type="Script" path="res://addons/enhanced_state_chart/scripts/transitions/guards/guard.gd" id="8_b6elt"]
+
+[sub_resource type="Resource" id="Resource_0uhjp"]
+script = ExtResource("5_81ciy")
+source_path = NodePath("../../../../Button")
+signal_name = "pressed"
+
+[sub_resource type="Resource" id="Resource_47ht2"]
+script = ExtResource("8_b6elt")
+
+[sub_resource type="Resource" id="Resource_ixmfo"]
+script = ExtResource("5_81ciy")
+source_path = NodePath("../../../../../Button")
+signal_name = "pressed"
+
+[sub_resource type="Resource" id="Resource_xur6j"]
+script = ExtResource("5_81ciy")
+source_path = NodePath("../../../../Button")
+signal_name = "pressed"
+
+[sub_resource type="Animation" id="Animation_rf16e"]
+resource_name = "SwitchOff"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CheckButton:button_pressed")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_o8g8k"]
+resource_name = "SwitchOn"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CheckButton:button_pressed")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_5hb7g"]
+_data = {
+"SwitchOff": SubResource("Animation_rf16e"),
+"SwitchOn": SubResource("Animation_o8g8k")
+}
+
+[node name="LightSwitch" type="Node2D"]
+
+[node name="Root" type="Node" parent="."]
+process_mode = 3
+script = ExtResource("1_mo0qm")
+
+[node name="LightState" type="Node" parent="Root"]
+process_mode = 3
+script = ExtResource("1_isuga")
+initial_state_path = NodePath("Off")
+
+[node name="Off" type="Node" parent="Root/LightState"]
+process_mode = 3
+script = ExtResource("1_isuga")
+initial_state_path = NodePath("A")
+
+[node name="Pressed" type="Node" parent="Root/LightState/Off"]
+script = ExtResource("5_rt1kq")
+event = SubResource("Resource_0uhjp")
+to_path = NodePath("../../On")
+guard = SubResource("Resource_47ht2")
+
+[node name="AnimationPlayer" type="Node" parent="Root/LightState/Off" node_paths=PackedStringArray("animation_player")]
+script = ExtResource("6_xrq42")
+animation_player = NodePath("../../../../SwitchAnimation")
+animation_name = "SwitchOff"
+
+[node name="A" type="Node" parent="Root/LightState/Off"]
+process_mode = 3
+script = ExtResource("2_frut2")
+
+[node name="Pressed" type="Node" parent="Root/LightState/Off/A"]
+script = ExtResource("5_rt1kq")
+event = SubResource("Resource_ixmfo")
+to_path = NodePath("..")
+
+[node name="Delay" type="Node" parent="Root/LightState/Off/A"]
+script = ExtResource("7_3fp0e")
+to_path = NodePath("../../B")
+
+[node name="B" type="Node" parent="Root/LightState/Off"]
+script = ExtResource("2_frut2")
+
+[node name="On" type="Node" parent="Root/LightState"]
+script = ExtResource("2_frut2")
+
+[node name="Pressed" type="Node" parent="Root/LightState/On"]
+script = ExtResource("5_rt1kq")
+event = SubResource("Resource_xur6j")
+to_path = NodePath("../../Off")
+
+[node name="AnimationPlayer" type="Node" parent="Root/LightState/On" node_paths=PackedStringArray("animation_player")]
+script = ExtResource("6_xrq42")
+animation_player = NodePath("../../../../SwitchAnimation")
+animation_name = "SwitchOn"
+
+[node name="Button" type="Button" parent="."]
+offset_right = 225.0
+offset_bottom = 31.0
+text = "Flick"
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="CheckButton" type="CheckButton" parent="."]
+offset_left = 16.0
+offset_top = 49.0
+offset_right = 60.0
+offset_bottom = 73.0
+button_pressed = true
+
+[node name="SwitchAnimation" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_5hb7g")
+}
