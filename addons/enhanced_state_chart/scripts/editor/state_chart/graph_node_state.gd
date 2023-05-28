@@ -1,4 +1,5 @@
 extends GraphNode
+class_name GraphNodeState
 
 
 var state: EState

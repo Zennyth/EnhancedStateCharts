@@ -28,8 +28,9 @@ func _on_scene_changed(scene_root: Node) -> void:
 	var root: EState = get_state_chart_node(scene_root)
 
 	if root != null and !is_in_bottom_panel:
+		print(state_chart_editor is StateChartEditor)
+		state_chart_editor.test = "azeaze"
 		add_control_to_bottom_panel(state_chart_editor, "State Charts")
-		state_chart_editor.root = root
 		is_in_bottom_panel = true
 	else:
 		remove_control_from_bottom_panel(state_chart_editor)
