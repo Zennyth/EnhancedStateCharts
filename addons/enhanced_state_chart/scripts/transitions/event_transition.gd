@@ -17,10 +17,11 @@ func set_source_path(value) -> void:
 
 
 func _on_owner_entered() -> void:
-    print(transition_owner.name)
-
     if source == null or !source.has_signal(signal_name):
         return
+    
+    if signal_name == "entered" and source == transition_owner:
+        return _on_event_triggered()
     
     source.get(signal_name).connect(_on_event_triggered)
     
