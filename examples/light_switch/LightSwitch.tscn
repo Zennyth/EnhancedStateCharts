@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://dqgdr7rlpb0rl"]
+[gd_scene load_steps=10 format=3 uid="uid://dqgdr7rlpb0rl"]
 
-[ext_resource type="Script" path="res://addons/enhanced_state_chart/scripts/states/composites/state_chart.gd" id="1_2hwpr"]
-[ext_resource type="Script" path="res://addons/enhanced_state_chart/scripts/states/composites/compound_state.gd" id="2_4tsff"]
-[ext_resource type="Script" path="res://addons/enhanced_state_chart/scripts/transitions/event_transition.gd" id="3_33qot"]
-[ext_resource type="Script" path="res://addons/enhanced_state_chart/scripts/actions/state_actions/animation_player_action.gd" id="5_ggx5s"]
-[ext_resource type="Script" path="res://addons/enhanced_state_chart/scripts/states/atomic_state.gd" id="6_1sufk"]
+[ext_resource type="Script" path="res://addons/enhanced_state_chart/scripts/states/composites/state_chart.gd" id="1_1scpu"]
+[ext_resource type="Script" path="res://addons/enhanced_state_chart/scripts/states/composites/compound_state.gd" id="2_ckgsj"]
+[ext_resource type="Script" path="res://addons/enhanced_state_chart/scripts/states/atomic_state.gd" id="3_n5ytt"]
+[ext_resource type="Script" path="res://addons/enhanced_state_chart/scripts/transitions/event_transition.gd" id="4_61e01"]
+[ext_resource type="Script" path="res://examples/light_switch/guards/light_guard.gd" id="5_pq8pa"]
+[ext_resource type="Script" path="res://addons/enhanced_state_chart/scripts/actions/state_actions/animation_player_action.gd" id="6_exvwj"]
 
 [sub_resource type="Animation" id="Animation_rf16e"]
 resource_name = "SwitchOff"
@@ -48,40 +49,45 @@ _data = {
 
 [node name="Root" type="Node" parent="."]
 process_mode = 3
-script = ExtResource("1_2hwpr")
+script = ExtResource("1_1scpu")
 
 [node name="LightState" type="Node" parent="Root"]
 process_mode = 3
-script = ExtResource("2_4tsff")
+script = ExtResource("2_ckgsj")
 initial_state_path = NodePath("Off")
 
 [node name="Off" type="Node" parent="Root/LightState"]
 process_mode = 3
-script = ExtResource("6_1sufk")
+script = ExtResource("3_n5ytt")
 
-[node name="Pressed" type="Node" parent="Root/LightState/Off"]
-script = ExtResource("3_33qot")
+[node name="Pressed" type="Node" parent="Root/LightState/Off" node_paths=PackedStringArray("guard")]
+script = ExtResource("4_61e01")
 source_path = NodePath("../../../../Button")
 signal_name = "pressed"
 to_path = NodePath("../../On")
+guard = NodePath("EGuard")
 debug = true
 
+[node name="EGuard" type="Node" parent="Root/LightState/Off/Pressed" node_paths=PackedStringArray("button")]
+script = ExtResource("5_pq8pa")
+button = NodePath("../../../../../CheckButton")
+
 [node name="AnimationPlayer" type="Node" parent="Root/LightState/Off" node_paths=PackedStringArray("animation_player")]
-script = ExtResource("5_ggx5s")
+script = ExtResource("6_exvwj")
 animation_player = NodePath("../../../../SwitchAnimation")
 animation_name = "SwitchOff"
 
 [node name="On" type="Node" parent="Root/LightState"]
-script = ExtResource("6_1sufk")
+script = ExtResource("3_n5ytt")
 
 [node name="Pressed" type="Node" parent="Root/LightState/On"]
-script = ExtResource("3_33qot")
+script = ExtResource("4_61e01")
 source_path = NodePath("../../../../Button")
 signal_name = "pressed"
 to_path = NodePath("../../Off")
 
 [node name="AnimationPlayer" type="Node" parent="Root/LightState/On" node_paths=PackedStringArray("animation_player")]
-script = ExtResource("5_ggx5s")
+script = ExtResource("6_exvwj")
 animation_player = NodePath("../../../../SwitchAnimation")
 animation_name = "SwitchOn"
 
@@ -98,6 +104,7 @@ offset_top = 49.0
 offset_right = 60.0
 offset_bottom = 73.0
 button_pressed = true
+text = "tes"
 
 [node name="SwitchAnimation" type="AnimationPlayer" parent="."]
 libraries = {
