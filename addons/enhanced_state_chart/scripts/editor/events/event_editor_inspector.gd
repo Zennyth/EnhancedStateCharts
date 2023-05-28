@@ -1,6 +1,6 @@
 extends EditorInspectorPlugin
 
-const SignalPickerButton = preload("res://addons/enhanced_state_chart/scenes/editor/SignalPickerButton.tscn")
+const SignalPickerButton = preload("res://addons/enhanced_state_chart/scenes/editor/events/SignalPickerButton.tscn")
 
 func _can_handle(object) -> bool:
     return object is EEventTransition

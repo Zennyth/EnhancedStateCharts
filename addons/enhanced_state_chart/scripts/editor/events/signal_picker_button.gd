@@ -1,7 +1,7 @@
 @tool
 extends Button
 
-const SignalPicker = preload("res://addons/enhanced_state_chart/scenes/editor/SignalPicker.tscn")
+const SignalPicker = preload("res://addons/enhanced_state_chart/scenes/editor/events/SignalPicker.tscn")
 
 var transition: ETransition
 var signal_picker

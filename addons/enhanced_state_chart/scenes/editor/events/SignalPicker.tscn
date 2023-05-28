@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://hipds0kexh6e"]
 
-[ext_resource type="Script" path="res://addons/enhanced_state_chart/scripts/editor/signal_picker.gd" id="1_fgvpf"]
+[ext_resource type="Script" path="res://addons/enhanced_state_chart/scripts/editor/events/signal_picker.gd" id="1_fgvpf"]
 
 [node name="SignalPicker" type="Window"]
 initial_position = 1

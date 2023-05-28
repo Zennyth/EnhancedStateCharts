@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://b4ctgm15sxg6t"]
+
+[ext_resource type="Script" path="res://addons/enhanced_state_chart/scripts/editor/state_chart/state_chart_editor.gd" id="1_gkkmu"]
+
+[node name="StateChartEditor" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_gkkmu")
